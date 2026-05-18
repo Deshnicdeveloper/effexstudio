@@ -255,7 +255,7 @@
 
   <script src="../js/main.js"></script>
   <script>
-    // Application Form Handling
+    // Application Form Handling - Send to WhatsApp
     document.getElementById('submitBtn').addEventListener('click', function() {
       const form = document.getElementById('application-form');
       const successMessage = document.getElementById('success-message');
@@ -267,6 +267,7 @@
       const location = document.getElementById('location').value.trim();
       const program = document.getElementById('program').value;
       const about = document.getElementById('about').value.trim();
+      const referral = document.getElementById('referral').value;
 
       // Basic validation
       if (!fullName || !email || !phone || !location || !program || !about) {
@@ -287,15 +288,36 @@
       btn.innerHTML = 'Sending...';
       btn.disabled = true;
 
-      // Simulate form submission
+      // Format WhatsApp message
+      const whatsappNumber = '237681922914';
+      const whatsappMessage = `*NEW ACADEMY APPLICATION - Effex Academy*
+
+*Full Name:* ${fullName}
+*Email:* ${email}
+*Phone:* ${phone}
+*Location:* ${location}
+*Program:* ${program}
+*Referral:* ${referral || 'Not specified'}
+
+*About the Applicant:*
+${about}
+
+---
+Sent from Effex Academy website`;
+
+      // Encode message for URL
+      const encodedMessage = encodeURIComponent(whatsappMessage);
+      const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+      // Open WhatsApp in new tab
+      window.open(whatsappURL, '_blank');
+
+      // Show success message
       setTimeout(() => {
-        // Hide form, show success
         form.style.display = 'none';
         successMessage.style.display = 'block';
-
-        // Scroll to success message
         successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 1500);
+      }, 500);
     });
   </script>
 </body>
