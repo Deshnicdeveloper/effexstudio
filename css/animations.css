@@ -1,0 +1,356 @@
+/* ========================================
+   EFFEX STUDIOS & EFFEX ACADEMY
+   Animation Keyframes & Utilities
+   ======================================== */
+
+/* ----------------------------------------
+   KEYFRAME ANIMATIONS
+   ---------------------------------------- */
+
+/* Fade In */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Fade In Up */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade In Down */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade In Left */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Fade In Right */
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Scale In */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Marquee Scroll */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Scroll Indicator Pulse */
+@keyframes scrollPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scaleY(0.8);
+  }
+}
+
+/* Scroll Indicator Bounce */
+@keyframes scrollBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+/* Line Grow */
+@keyframes lineGrow {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Pulse */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Float */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Spin */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Hero Text Reveal */
+@keyframes heroTextReveal {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Shimmer (for loading states) */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ----------------------------------------
+   ANIMATION UTILITY CLASSES
+   ---------------------------------------- */
+
+/* Base animation properties */
+.animate {
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Duration */
+.animate-fast { animation-duration: 0.3s; }
+.animate-normal { animation-duration: 0.6s; }
+.animate-slow { animation-duration: 1s; }
+.animate-slower { animation-duration: 1.5s; }
+
+/* Delay */
+.animate-delay-100 { animation-delay: 0.1s; }
+.animate-delay-200 { animation-delay: 0.2s; }
+.animate-delay-300 { animation-delay: 0.3s; }
+.animate-delay-400 { animation-delay: 0.4s; }
+.animate-delay-500 { animation-delay: 0.5s; }
+.animate-delay-600 { animation-delay: 0.6s; }
+.animate-delay-700 { animation-delay: 0.7s; }
+.animate-delay-800 { animation-delay: 0.8s; }
+.animate-delay-900 { animation-delay: 0.9s; }
+.animate-delay-1000 { animation-delay: 1s; }
+
+/* Animation types */
+.animate-fade-in {
+  animation-name: fadeIn;
+}
+
+.animate-fade-in-up {
+  animation-name: fadeInUp;
+}
+
+.animate-fade-in-down {
+  animation-name: fadeInDown;
+}
+
+.animate-fade-in-left {
+  animation-name: fadeInLeft;
+}
+
+.animate-fade-in-right {
+  animation-name: fadeInRight;
+}
+
+.animate-scale-in {
+  animation-name: scaleIn;
+}
+
+.animate-float {
+  animation-name: float;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+
+.animate-pulse {
+  animation-name: pulse;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+
+.animate-spin {
+  animation-name: spin;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+/* ----------------------------------------
+   HERO TEXT STAGGER ANIMATION
+   ---------------------------------------- */
+.hero-text-animate {
+  overflow: hidden;
+}
+
+.hero-text-animate .word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(100%);
+  animation: heroTextReveal 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+.hero-text-animate .word:nth-child(1) { animation-delay: 0.1s; }
+.hero-text-animate .word:nth-child(2) { animation-delay: 0.15s; }
+.hero-text-animate .word:nth-child(3) { animation-delay: 0.2s; }
+.hero-text-animate .word:nth-child(4) { animation-delay: 0.25s; }
+.hero-text-animate .word:nth-child(5) { animation-delay: 0.3s; }
+.hero-text-animate .word:nth-child(6) { animation-delay: 0.35s; }
+.hero-text-animate .word:nth-child(7) { animation-delay: 0.4s; }
+.hero-text-animate .word:nth-child(8) { animation-delay: 0.45s; }
+.hero-text-animate .word:nth-child(9) { animation-delay: 0.5s; }
+.hero-text-animate .word:nth-child(10) { animation-delay: 0.55s; }
+
+/* ----------------------------------------
+   LOADING / SHIMMER EFFECTS
+   ---------------------------------------- */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--gray-700) 0%,
+    var(--gray-500) 50%,
+    var(--gray-700) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ----------------------------------------
+   HOVER TRANSITIONS
+   ---------------------------------------- */
+
+/* Scale on hover */
+.hover-scale {
+  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* Lift on hover */
+.hover-lift {
+  transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1),
+              box-shadow 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Glow on hover */
+.hover-glow {
+  transition: box-shadow 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 30px rgba(200, 131, 42, 0.3);
+}
+
+/* ----------------------------------------
+   PAGE TRANSITIONS
+   ---------------------------------------- */
+.page-transition-enter {
+  opacity: 0;
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transition: opacity 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.page-transition-exit {
+  opacity: 1;
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* ----------------------------------------
+   REDUCED MOTION
+   ---------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .animate,
+  .hover-scale,
+  .hover-lift,
+  .hover-glow,
+  .hero-text-animate .word {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
