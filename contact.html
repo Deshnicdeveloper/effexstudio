@@ -85,7 +85,7 @@
       <div style="display: grid; grid-template-columns: 1fr; gap: 4rem;">
 
         <!-- Two Column Layout -->
-        <div style="display: grid; grid-template-columns: 1fr; gap: 4rem;" class="reveal">
+        <div class="contact-grid reveal">
 
           <!-- Left: Contact Form -->
           <div id="contact-form">
@@ -306,15 +306,15 @@
 
   <style>
     /* Two column layout for contact page */
-    @media (min-width: 768px) {
-      #contact-form + div {
-        /* This targets the contact info div */
-      }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4rem;
+    }
 
-      .reveal > div:first-child {
-        display: grid;
+    @media (min-width: 768px) {
+      .contact-grid {
         grid-template-columns: 1.2fr 1fr;
-        gap: 4rem;
       }
     }
   </style>
