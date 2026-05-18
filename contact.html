@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contact Effex Studios — Start a project with our creative media team in Douala, Cameroon.">
+  <meta name="keywords" content="Effex Studios, contact, start a project, Douala, Cameroon, creative agency">
+  <meta name="author" content="Effex Studios Ltd">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Contact | Effex Studios | Douala, Cameroon">
+  <meta property="og:description" content="Let's make something together. Get in touch with Effex Studios.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
+
+  <title>Contact | Effex Studios | Douala, Cameroon</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-eff">Eff</span><span class="nav-logo-ex">ex</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="work.html" class="nav-link">Work</a></li>
+        <li><a href="services.html" class="nav-link">Services</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="academy/index.html" class="nav-link">Academy</a></li>
+      </ul>
+
+      <div class="nav-ctas">
+        <a href="academy/apply.html" class="btn btn-outline">Join Academy</a>
+        <a href="contact.html" class="btn btn-primary">Start a Project</a>
+      </div>
+
+      <button class="nav-hamburger" aria-label="Toggle menu">
+        <span class="nav-hamburger-line"></span>
+        <span class="nav-hamburger-line"></span>
+        <span class="nav-hamburger-line"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu">
+    <ul class="mobile-menu-links">
+      <li><a href="work.html" class="mobile-menu-link">Work</a></li>
+      <li><a href="services.html" class="mobile-menu-link">Services</a></li>
+      <li><a href="about.html" class="mobile-menu-link">About</a></li>
+      <li><a href="academy/index.html" class="mobile-menu-link">Academy</a></li>
+    </ul>
+    <div class="mobile-menu-ctas">
+      <a href="academy/apply.html" class="btn btn-outline">Join Academy</a>
+      <a href="contact.html" class="btn btn-primary">Start a Project</a>
+    </div>
+  </div>
+
+  <!-- Page Header -->
+  <section class="section" style="padding-top: calc(var(--nav-height) + 4rem); padding-bottom: 2rem;">
+    <div class="container">
+      <div class="reveal">
+        <span class="services-label">Get in Touch</span>
+        <h1 style="font-size: var(--text-5xl); margin-bottom: 1.5rem;">Let's make something together.</h1>
+        <p class="text-lg" style="color: var(--gray-300); max-width: 600px;">
+          Have a project in mind? A story to tell? We'd love to hear from you. Fill out the form and we'll get back to you within 24 hours.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="section" style="padding-top: 2rem;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: 1fr; gap: 4rem;">
+
+        <!-- Two Column Layout -->
+        <div style="display: grid; grid-template-columns: 1fr; gap: 4rem;" class="reveal">
+
+          <!-- Left: Contact Form -->
+          <div id="contact-form">
+            <h2 style="font-size: var(--text-2xl); margin-bottom: 2rem;">Start a Project</h2>
+
+            <div class="form-group">
+              <label for="name" class="form-label">Your Name *</label>
+              <input type="text" id="name" name="name" class="form-input" placeholder="Full name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="email" class="form-label">Email Address *</label>
+              <input type="email" id="email" name="email" class="form-input" placeholder="you@example.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="company" class="form-label">Company / Organization</label>
+              <input type="text" id="company" name="company" class="form-input" placeholder="Your company name (if applicable)">
+            </div>
+
+            <div class="form-group">
+              <label for="projectType" class="form-label">Project Type *</label>
+              <select id="projectType" name="projectType" class="form-select" required>
+                <option value="" disabled selected>Select a project type</option>
+                <option value="brand-film">Brand Film</option>
+                <option value="documentary">Documentary</option>
+                <option value="photography">Photography</option>
+                <option value="social-content">Social Media Content</option>
+                <option value="full-campaign">Full Campaign</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="budget" class="form-label">Budget Range</label>
+              <select id="budget" name="budget" class="form-select">
+                <option value="" disabled selected>Select a budget range</option>
+                <option value="under-5k">Under $5,000</option>
+                <option value="5k-15k">$5,000 - $15,000</option>
+                <option value="15k-50k">$15,000 - $50,000</option>
+                <option value="50k-plus">$50,000+</option>
+                <option value="not-sure">Not sure yet</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="message" class="form-label">Tell us about your project *</label>
+              <textarea id="message" name="message" class="form-textarea" placeholder="What do you want to create? What's the timeline? Any other details that help us understand your vision." required></textarea>
+            </div>
+
+            <button type="button" id="submitBtn" class="btn btn-primary" style="width: 100%;">
+              Send Message
+              <span class="btn-arrow">→</span>
+            </button>
+          </div>
+
+          <!-- Right: Contact Info -->
+          <div>
+            <h2 style="font-size: var(--text-2xl); margin-bottom: 2rem;">Contact Info</h2>
+
+            <div style="margin-bottom: 2.5rem;">
+              <h4 style="font-size: var(--text-sm); color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;">Email</h4>
+              <a href="mailto:hello@effexstudios.com" style="font-size: var(--text-lg); color: var(--white);">hello@effexstudios.com</a>
+            </div>
+
+            <div style="margin-bottom: 2.5rem;">
+              <h4 style="font-size: var(--text-sm); color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;">Location</h4>
+              <p style="color: var(--gray-300);">
+                Douala, Cameroon<br>
+                Central Africa
+              </p>
+            </div>
+
+            <div style="margin-bottom: 2.5rem;">
+              <h4 style="font-size: var(--text-sm); color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem;">Social</h4>
+              <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <a href="#" style="color: var(--gray-300);">Instagram →</a>
+                <a href="#" style="color: var(--gray-300);">LinkedIn →</a>
+                <a href="#" style="color: var(--gray-300);">YouTube →</a>
+              </div>
+            </div>
+
+            <!-- Map Placeholder -->
+            <div style="background: linear-gradient(135deg, #1a1815 0%, #25201a 50%, #181512 100%); aspect-ratio: 16/10; display: flex; align-items: center; justify-content: center; margin-top: 2rem;">
+              <div style="text-align: center;">
+                <span style="font-size: var(--text-xs); color: var(--gold); text-transform: uppercase; letter-spacing: 0.15em;">📍</span>
+                <p style="font-family: var(--font-serif); font-size: var(--text-xl); margin-top: 0.5rem;">Douala, Cameroon</p>
+                <p style="color: var(--gray-500); font-size: var(--text-sm); margin-top: 0.25rem;">Central Africa</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Success Message (hidden by default) -->
+        <div id="success-message" style="display: none; text-align: center; padding: 4rem 0;">
+          <div style="font-size: 3rem; margin-bottom: 1rem;">✓</div>
+          <h2 style="font-size: var(--text-2xl); margin-bottom: 1rem;">Message Sent!</h2>
+          <p style="color: var(--gray-300); margin-bottom: 2rem; max-width: 400px; margin-left: auto; margin-right: auto;">
+            Thank you for reaching out. We'll review your message and get back to you within 24 hours.
+          </p>
+          <a href="index.html" class="btn btn-outline">Back to Home</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Academy CTA -->
+  <section class="section" style="border-top: 1px solid var(--gray-700); margin-top: 4rem;">
+    <div class="container">
+      <div class="about-teaser-inner reveal">
+        <div>
+          <span class="services-label">Effex Academy</span>
+          <h2 style="font-size: var(--text-3xl); margin-bottom: 1rem;">Looking to learn?</h2>
+          <p style="color: var(--gray-300);">
+            If you're interested in training and education rather than project work, check out Effex Academy — our practical media training program.
+          </p>
+        </div>
+        <div style="display: flex; align-items: center;">
+          <a href="academy/index.html" class="btn btn-outline">
+            Explore the Academy
+            <span class="btn-arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-tagline reveal">
+      <h2>Tell your story.<br>Build your future.</h2>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <span class="nav-logo-eff">Eff</span><span class="nav-logo-ex">ex</span>
+        </a>
+        <p class="footer-location">Douala, Cameroon</p>
+        <a href="mailto:hello@effexstudios.com" class="footer-email">hello@effexstudios.com</a>
+      </div>
+      <div class="footer-nav">
+        <div class="footer-nav-column">
+          <h4>Studios</h4>
+          <ul class="footer-nav-links">
+            <li><a href="work.html" class="footer-nav-link">Work</a></li>
+            <li><a href="services.html" class="footer-nav-link">Services</a></li>
+            <li><a href="about.html" class="footer-nav-link">About</a></li>
+            <li><a href="contact.html" class="footer-nav-link">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-nav-column">
+          <h4>Academy</h4>
+          <ul class="footer-nav-links">
+            <li><a href="academy/index.html" class="footer-nav-link">Overview</a></li>
+            <li><a href="academy/programs.html" class="footer-nav-link">Programs</a></li>
+            <li><a href="academy/apply.html" class="footer-nav-link">Apply</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-social">
+        <div class="footer-social-links">
+          <a href="#" class="footer-social-link">Instagram</a>
+          <a href="#" class="footer-social-link">LinkedIn</a>
+          <a href="#" class="footer-social-link">YouTube</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Effex Studios Ltd & Effex Academy</span>
+      <span class="footer-bottom-tagline">"Built on African stories. Powered by African talent."</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Contact Form Handling
+    document.getElementById('submitBtn').addEventListener('click', function() {
+      const form = document.getElementById('contact-form');
+      const successMessage = document.getElementById('success-message');
+
+      // Get form values
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const projectType = document.getElementById('projectType').value;
+      const message = document.getElementById('message').value.trim();
+
+      // Basic validation
+      if (!name || !email || !projectType || !message) {
+        alert('Please fill in all required fields.');
+        return;
+      }
+
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+
+      // Show loading state
+      const btn = this;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = 'Sending...';
+      btn.disabled = true;
+
+      // Simulate form submission
+      setTimeout(() => {
+        // Hide form, show success
+        form.style.display = 'none';
+        successMessage.style.display = 'block';
+
+        // Scroll to success message
+        successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 1500);
+    });
+  </script>
+
+  <style>
+    /* Two column layout for contact page */
+    @media (min-width: 768px) {
+      #contact-form + div {
+        /* This targets the contact info div */
+      }
+
+      .reveal > div:first-child {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 4rem;
+      }
+    }
+  </style>
+</body>
+</html>
