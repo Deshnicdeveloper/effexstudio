@@ -8,16 +8,16 @@
    ---------------------------------------- */
 :root {
   /* Colors */
-  --black: #0A0A0A;
-  --gold: #C8832A;
-  --gold-light: #E8A84A;
-  --gold-pale: #F5E6CF;
+  --black: #0F1A3C;
+  --gold: #F4830A;
+  --gold-light: #FF9A2E;
+  --gold-pale: #FEE8D0;
   --white: #FAFAF7;
   --off-white: #F2F0EB;
   --gray-100: #E8E6E0;
   --gray-300: #B8B5AE;
   --gray-500: #7A7870;
-  --gray-700: #3A3834;
+  --gray-700: #2A3654;
 
   /* Typography */
   --font-serif: 'Cormorant Garamond', Georgia, serif;
@@ -267,16 +267,16 @@ p:last-child {
   display: flex;
   align-items: center;
   padding: 0 var(--section-padding-x);
-  background-color: rgba(10, 10, 10, 0.9);
+  background-color: rgba(15, 26, 60, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(200, 131, 42, 0);
+  border-bottom: 1px solid rgba(244, 131, 10, 0);
   transition: all var(--transition-base);
 }
 
 .nav.scrolled {
   height: var(--nav-height-scrolled);
-  border-bottom-color: rgba(200, 131, 42, 0.2);
+  border-bottom-color: rgba(244, 131, 10, 0.2);
 }
 
 .nav-inner {
@@ -464,7 +464,7 @@ p:last-child {
   right: 0;
   bottom: 0;
   z-index: -2;
-  background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 50%, #151510 100%);
+  background: linear-gradient(135deg, #1a2847 0%, #0F1A3C 50%, #152035 100%);
   background-image: url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1920&q=80');
   background-size: cover;
   background-position: center;
@@ -491,7 +491,7 @@ p:last-child {
   right: 0;
   bottom: 0;
   z-index: -1;
-  background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.7) 100%);
+  background: linear-gradient(to bottom, rgba(15,26,60,0.3) 0%, rgba(15,26,60,0.7) 100%);
 }
 
 /* Location Badge */
@@ -556,7 +556,7 @@ p:last-child {
   padding: 1.5rem var(--section-padding-x);
   padding-top: -0.5rem var(--section-padding-x);
   border-top: 1px solid rgba(255,255,255,0.1);
-  background: rgba(10,10,10,0.5);
+  background: rgba(15,26,60,0.5);
 }
 
 .hero-meta {
@@ -782,7 +782,7 @@ p:last-child {
 }
 
 .service-card:hover {
-  background-color: rgba(200, 131, 42, 0.05);
+  background-color: rgba(244, 131, 10, 0.05);
 }
 
 .service-number {
@@ -882,7 +882,7 @@ p:last-child {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.3) 50%, transparent 100%);
+  background: linear-gradient(to top, rgba(15,26,60,0.9) 0%, rgba(15,26,60,0.3) 50%, transparent 100%);
   opacity: 0.8;
   transition: opacity var(--transition-base);
 }

@@ -158,7 +158,7 @@
 
             <!-- Map Placeholder -->
             <div style="background-image: url('https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center; aspect-ratio: 16/10; display: flex; align-items: center; justify-content: center; margin-top: 2rem; position: relative;">
-              <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10,10,10,0.6);"></div>
+              <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15,26,60,0.6);"></div>
               <div style="text-align: center; position: relative; z-index: 1;">
                 <span style="font-size: var(--text-xs); color: var(--gold); text-transform: uppercase; letter-spacing: 0.15em;">📍</span>
                 <p style="font-family: var(--font-serif); font-size: var(--text-xl); margin-top: 0.5rem;">Douala, Cameroon</p>
@@ -251,7 +251,7 @@
 
   <script src="js/main.js"></script>
   <script>
-    // Contact Form Handling
+    // Contact Form Handling - Send to WhatsApp
     document.getElementById('submitBtn').addEventListener('click', function() {
       const form = document.getElementById('contact-form');
       const successMessage = document.getElementById('success-message');
@@ -259,7 +259,9 @@
       // Get form values
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
+      const company = document.getElementById('company').value.trim();
       const projectType = document.getElementById('projectType').value;
+      const budget = document.getElementById('budget').value;
       const message = document.getElementById('message').value.trim();
 
       // Basic validation
@@ -281,15 +283,35 @@
       btn.innerHTML = 'Sending...';
       btn.disabled = true;
 
-      // Simulate form submission
+      // Format WhatsApp message
+      const whatsappNumber = '237681922914';
+      const whatsappMessage = `*NEW PROJECT INQUIRY - Effex Studios*
+
+*Name:* ${name}
+*Email:* ${email}
+*Company:* ${company || 'N/A'}
+*Project Type:* ${projectType}
+*Budget:* ${budget || 'Not specified'}
+
+*Message:*
+${message}
+
+---
+Sent from Effex Studios website`;
+
+      // Encode message for URL
+      const encodedMessage = encodeURIComponent(whatsappMessage);
+      const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+      // Open WhatsApp in new tab
+      window.open(whatsappURL, '_blank');
+
+      // Show success message
       setTimeout(() => {
-        // Hide form, show success
         form.style.display = 'none';
         successMessage.style.display = 'block';
-
-        // Scroll to success message
         successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 1500);
+      }, 500);
     });
   </script>
 
