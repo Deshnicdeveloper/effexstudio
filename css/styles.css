@@ -304,6 +304,11 @@ p:last-child {
   color: var(--gold);
 }
 
+.nav-logo-media {
+  color: var(--white);
+  font-weight: 300;
+}
+
 /* Nav Links - Desktop */
 .nav-links {
   display: none;
