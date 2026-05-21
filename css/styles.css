@@ -213,14 +213,14 @@ p:last-child {
 
 .btn-primary {
   background-color: var(--gold);
-  color: var(--black);
+  color: var(--white);
   border: 1px solid var(--gold);
 }
 
 .btn-primary:hover {
   background-color: var(--gold-light);
   border-color: var(--gold-light);
-  color: var(--black);
+  color: var(--white);
 }
 
 .btn-outline {
@@ -301,7 +301,7 @@ p:last-child {
 }
 
 .nav-logo-ex {
-  color: var(--gold);
+  color: var(--white);
 }
 
 .nav-logo-media {
