@@ -9,9 +9,11 @@
 :root {
   /* Colors */
   --black: #0F1A3C;
-  --gold: #F4830A;
-  --gold-light: #FF9A2E;
-  --gold-pale: #FEE8D0;
+  /* Brand accent — Effex blue (was gold/orange). Kept the --gold* token
+     names so existing references across HTML/CSS continue to resolve. */
+  --gold: #2E8BFF;
+  --gold-light: #5AA7FF;
+  --gold-pale: #DCEBFF;
   --white: #FAFAF7;
   --off-white: #F2F0EB;
   --gray-100: #E8E6E0;
@@ -270,13 +272,13 @@ p:last-child {
   background-color: rgba(15, 26, 60, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(244, 131, 10, 0);
+  border-bottom: 1px solid rgba(46, 139, 255, 0);
   transition: all var(--transition-base);
 }
 
 .nav.scrolled {
   height: var(--nav-height-scrolled);
-  border-bottom-color: rgba(244, 131, 10, 0.2);
+  border-bottom-color: rgba(46, 139, 255, 0.2);
 }
 
 .nav-inner {
@@ -787,7 +789,7 @@ p:last-child {
 }
 
 .service-card:hover {
-  background-color: rgba(244, 131, 10, 0.05);
+  background-color: rgba(46, 139, 255, 0.05);
 }
 
 .service-number {
@@ -873,7 +875,7 @@ p:last-child {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #1a1a1a 0%, #252520 50%, #1a1815 100%);
+  background: linear-gradient(135deg, #142038 0%, #1c2c4d 50%, #101a30 100%);
   transition: transform var(--transition-slow);
 }
 
