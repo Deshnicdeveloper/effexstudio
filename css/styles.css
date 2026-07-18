@@ -21,9 +21,11 @@
   --gray-500: #7A7870;
   --gray-700: #2A3654;
 
-  /* Typography */
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
-  --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Typography — Poppins across the entire site.
+     Both tokens map to Poppins so every element (including ones that
+     referenced the old serif/sans tokens) renders in Poppins. */
+  --font-serif: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Font Sizes (fluid) */
   --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
