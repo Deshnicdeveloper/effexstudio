@@ -526,16 +526,10 @@ p:last-child {
 
 .hero-headline {
   font-size: var(--text-hero);
-  font-weight: 300;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
+  font-weight: 600;
+  line-height: 1.15;
   margin-bottom: 1.5rem;
   max-width: 900px;
-}
-
-.hero-headline .italic-gold {
-  font-style: italic;
-  color: var(--gold);
 }
 
 .hero-subtext {
