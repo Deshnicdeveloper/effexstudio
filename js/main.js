@@ -355,3 +355,63 @@ function setActiveNavLink() {
 
 // Run on page load
 window.addEventListener('load', setActiveNavLink);
+
+/* ----------------------------------------
+   UPCOMING EVENT MODAL — CCC 2026
+   Shows once per session, 10s after load.
+   ---------------------------------------- */
+(function () {
+  const path = window.location.pathname;
+
+  // Don't show on the event page itself or the ticket page
+  if (/convention\.html$/.test(path) || /ticket\.html$/.test(path)) return;
+  // Only once per browsing session
+  try { if (sessionStorage.getItem('cccModalShown')) return; } catch (e) {}
+
+  const prefix = path.indexOf('/academy/') !== -1 ? '../' : '';
+
+  const overlay = document.createElement('div');
+  overlay.className = 'ccc-modal-overlay';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-label', 'Upcoming event: Cameroon Creative Convention 2026');
+  overlay.innerHTML =
+    '<div class="ccc-modal">' +
+      '<button class="ccc-modal-close" aria-label="Close">&times;</button>' +
+      '<div class="ccc-modal-media">' +
+        '<span class="ccc-modal-badge">Upcoming Event</span>' +
+        '<img src="' + prefix + 'images/ccc-hero.jpg" alt="Cameroon Creative Convention 2026">' +
+      '</div>' +
+      '<div class="ccc-modal-body">' +
+        '<div class="ccc-modal-eyebrow">Effex Academy Presents</div>' +
+        '<h2 class="ccc-modal-title">Cameroon Creative Convention 2026</h2>' +
+        '<div class="ccc-modal-meta"><span>📅 August 1, 2026</span><span>📍 Yaoundé, Cameroon</span></div>' +
+        '<p class="ccc-modal-text">One day. One platform. Join 100+ creators, entrepreneurs and storytellers shaping the future of Cameroon\'s creative economy.</p>' +
+        '<div class="ccc-modal-actions">' +
+          '<a href="' + prefix + 'convention.html" class="btn btn-primary">Register Now <span class="btn-arrow">→</span></a>' +
+          '<button type="button" class="ccc-modal-dismiss">Maybe later</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  function close() {
+    overlay.classList.remove('open');
+    document.removeEventListener('keydown', onKey);
+    setTimeout(function () { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 400);
+  }
+  function onKey(e) { if (e.key === 'Escape') close(); }
+
+  overlay.querySelector('.ccc-modal-close').addEventListener('click', close);
+  overlay.querySelector('.ccc-modal-dismiss').addEventListener('click', close);
+  overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+
+  setTimeout(function () {
+    document.body.appendChild(overlay);
+    // reflow then animate in
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { overlay.classList.add('open'); });
+    });
+    document.addEventListener('keydown', onKey);
+    try { sessionStorage.setItem('cccModalShown', '1'); } catch (e) {}
+  }, 10000);
+})();
