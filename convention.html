@@ -589,11 +589,16 @@
 
   <script src="js/main.js"></script>
   <script>
-    // Registration Form Handling - Send to WhatsApp
-    document.getElementById('submitBtn').addEventListener('click', function() {
-      const form = document.getElementById('registration-form');
-      const successMessage = document.getElementById('success-message');
+    // Generate a unique ticket number (avoids ambiguous chars)
+    function genTicketId() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let s = '';
+      for (let i = 0; i < 10; i++) s += chars[Math.floor(Math.random() * chars.length)];
+      return s;
+    }
 
+    // Registration Form Handling - notify via WhatsApp, then issue a ticket
+    document.getElementById('submitBtn').addEventListener('click', function() {
       const fullName = document.getElementById('fullName').value.trim();
       const email = document.getElementById('email').value.trim();
       const phone = document.getElementById('phone').value.trim();
@@ -611,12 +616,16 @@
       }
 
       const btn = this;
-      btn.innerHTML = 'Sending...';
+      btn.innerHTML = 'Issuing your ticket...';
       btn.disabled = true;
 
+      const ticketId = genTicketId();
+
+      // Notify the organizer via WhatsApp (opens in a new tab)
       const whatsappNumber = '237681922914';
       const whatsappMessage = `*NEW CCC 2026 REGISTRATION - Cameroon Creative Convention*
 
+*Ticket N°:* ${ticketId}
 *Full Name:* ${fullName}
 *Email:* ${email}
 *Phone:* ${phone}
@@ -626,16 +635,12 @@ ${reason}
 
 ---
 Sent from the Effex website`;
-
-      const encodedMessage = encodeURIComponent(whatsappMessage);
-      const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+      const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
       window.open(whatsappURL, '_blank');
 
-      setTimeout(() => {
-        form.style.display = 'none';
-        successMessage.style.display = 'block';
-        successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 500);
+      // Take the attendee to their downloadable ticket
+      const ticketURL = 'ticket.html?name=' + encodeURIComponent(fullName) + '&id=' + ticketId;
+      setTimeout(function () { window.location.href = ticketURL; }, 300);
     });
   </script>
 </body>

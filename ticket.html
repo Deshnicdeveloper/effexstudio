@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Your Ticket | Cameroon Creative Convention 2026</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaEtQJrVyx3cmOvWxxtN1TvFVDAKm7QWOvMA&s">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <style>
+    .tk-page { min-height: 100vh; padding: calc(var(--nav-height) + 3rem) 1.25rem 4rem; background: radial-gradient(1000px 600px at 50% -10%, rgba(46,139,255,0.12), transparent 60%), #0b1424; }
+    .tk-head { text-align: center; max-width: 640px; margin: 0 auto 2.5rem; }
+    .tk-head .ccc-kicker { display:inline-flex; align-items:center; gap:.6rem; font-size: var(--text-xs); letter-spacing:.2em; text-transform:uppercase; color: var(--gold); font-weight:600; margin-bottom: 1rem; }
+    .tk-head h1 { font-size: var(--text-4xl); line-height: 1.15; margin-bottom: .75rem; }
+    .tk-head p { color: var(--gray-300); font-size: var(--text-base); }
+
+    /* Scaling wrapper so the fixed-size ticket fits any screen */
+    .tk-viewport { display:flex; justify-content:center; }
+    .tk-scale { transform-origin: top center; }
+
+    /* ---------------- TICKET ---------------- */
+    .ticket {
+      width: 920px; display: flex; border-radius: 24px; overflow: hidden;
+      box-shadow: 0 40px 90px -30px rgba(0,0,0,0.75);
+      font-family: var(--font-sans);
+    }
+    .tk-main {
+      position: relative; flex: 1; padding: 3rem 3.25rem;
+      color: #fff;
+      background:
+        repeating-linear-gradient(-45deg, rgba(255,255,255,0.035) 0 2px, transparent 2px 16px),
+        radial-gradient(120% 120% at 0% 0%, #16294d 0%, #0f1e3a 45%, #0a1730 100%);
+    }
+    .tk-eyebrow { font-size: 13px; letter-spacing: .28em; text-transform: uppercase; color: #9fb0cc; font-weight: 600; margin-bottom: 1.6rem; }
+    .tk-brand { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tk-logo {
+      width: 60px; height: 60px; border-radius: 14px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 20px; letter-spacing: .02em; color: #fff;
+      background: linear-gradient(135deg, #2E8BFF, #1c5fd6);
+      box-shadow: 0 8px 22px -6px rgba(46,139,255,0.6);
+    }
+    .tk-wordmark { font-size: 30px; font-weight: 800; line-height: 1.02; letter-spacing: -0.01em; text-transform: uppercase; }
+    .tk-wordmark small { display:block; font-size: 15px; font-weight: 600; letter-spacing: .12em; color:#c7d4ea; text-transform: uppercase; }
+    .tk-year {
+      display: inline-flex; align-items: center; padding: .35rem .85rem; border-radius: 10px;
+      background: #2E8BFF; color: #06152e; font-weight: 800; font-size: 26px; line-height: 1;
+    }
+    .tk-tagline { color: #4fa0ff; font-size: 16px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 1.75rem; }
+
+    .tk-pills { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 1.75rem; }
+    .tk-pill { display: inline-flex; align-items: center; gap: .5rem; padding: .7rem 1.1rem; border-radius: 12px; font-weight: 700; font-size: 15px; color: #fff; }
+    .tk-pill svg { width: 17px; height: 17px; }
+    .tk-pill.red { background: #dc3a2f; }
+    .tk-pill.blue { background: #2E8BFF; }
+    .tk-pill.orange { background: #e8862a; }
+
+    .tk-divider { height: 1px; background: linear-gradient(90deg, rgba(255,255,255,.25), rgba(255,255,255,.03)); margin: 1.5rem 0 1.6rem; }
+    .tk-holder-label { font-size: 13px; letter-spacing: .22em; text-transform: uppercase; color: #8fa2c2; margin-bottom: .6rem; }
+    .tk-name { font-size: 40px; font-weight: 800; line-height: 1.05; margin-bottom: .35rem; word-break: break-word; }
+    .tk-role { font-size: 19px; color: #c7d4ea; font-weight: 400; margin-bottom: 1.6rem; }
+    .tk-admit { font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: #7d90b2; font-weight: 600; }
+
+    /* ---------------- STUB ---------------- */
+    .tk-stub {
+      position: relative; width: 240px; flex-shrink: 0;
+      background: #f3f6fc; color: #0f1e3a;
+      padding: 2.5rem 1.5rem; display: flex; flex-direction: column; align-items: center;
+    }
+    .tk-stub::before {
+      content: ''; position: absolute; left: -1px; top: 0; bottom: 0; width: 2px;
+      background-image: linear-gradient(#0b1424 55%, transparent 0);
+      background-size: 2px 16px; background-repeat: repeat-y;
+    }
+    /* notches */
+    .tk-notch { position: absolute; left: -13px; width: 26px; height: 26px; border-radius: 50%; background: #0b1424; }
+    .tk-notch.top { top: -13px; }
+    .tk-notch.bottom { bottom: -13px; }
+
+    .tk-stub-title { font-size: 15px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; text-align: center; margin-bottom: 1.5rem; }
+    .tk-barcode { display: flex; align-items: flex-end; gap: 2px; height: 210px; margin-bottom: 1.5rem; }
+    .tk-barcode span { display: block; width: 3px; background: #0f1e3a; height: 100%; }
+    .tk-ticketno-label { font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: #6b7a95; margin-top: auto; }
+    .tk-ticketno { font-size: 22px; font-weight: 800; letter-spacing: .06em; }
+
+    /* actions */
+    .tk-actions { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-top: 2.75rem; }
+
+    @media (max-width: 620px) {
+      .tk-head h1 { font-size: var(--text-3xl); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Simplified Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <span class="nav-logo-eff">Eff</span><span class="nav-logo-ex">ex</span> <span class="nav-logo-media">Media</span>
+      </a>
+      <a href="convention.html" style="display: flex; align-items: center; gap: 0.5rem; font-size: var(--text-sm); color: var(--gray-300);">
+        <span>←</span> Back to CCC 2026
+      </a>
+    </div>
+  </nav>
+
+  <main class="tk-page">
+    <div class="tk-head">
+      <span class="ccc-kicker">You're In</span>
+      <h1>Your CCC 2026 ticket is ready</h1>
+      <p>Save or screenshot your ticket and bring it to the entrance. We can't wait to see you in Yaoundé.</p>
+    </div>
+
+    <div class="tk-viewport">
+      <div class="tk-scale">
+        <!-- TICKET -->
+        <div class="ticket" id="ticket">
+          <div class="tk-main">
+            <div class="tk-eyebrow">Effex Academy Presents</div>
+
+            <div class="tk-brand">
+              <div class="tk-logo">CCC</div>
+              <div class="tk-wordmark">Cameroon Creative<small>Convention</small></div>
+              <span class="tk-year">2026</span>
+            </div>
+
+            <div class="tk-tagline">Where Cameroon's Creators Connect</div>
+
+            <div class="tk-pills">
+              <span class="tk-pill red">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                1 AUG 2026
+              </span>
+              <span class="tk-pill blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 21s-7-6.5-7-11a7 7 0 0 1 14 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                YAOUNDÉ, CAMEROON
+              </span>
+              <span class="tk-pill orange">DAY: FULL DAY</span>
+            </div>
+
+            <div class="tk-divider"></div>
+
+            <div class="tk-holder-label">Ticket Holder</div>
+            <div class="tk-name" id="tk-name">Guest</div>
+            <div class="tk-role">Attendee</div>
+            <div class="tk-admit">Admit One · Registered</div>
+          </div>
+
+          <div class="tk-stub">
+            <span class="tk-notch top"></span>
+            <span class="tk-notch bottom"></span>
+            <div class="tk-stub-title">CCC · 2026</div>
+            <div class="tk-barcode" id="tk-barcode"></div>
+            <div class="tk-ticketno-label">Ticket N&ordm;</div>
+            <div class="tk-ticketno" id="tk-ticketno">--------</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tk-actions">
+      <button type="button" id="downloadBtn" class="btn btn-primary">
+        Download Ticket <span class="btn-arrow">↓</span>
+      </button>
+      <a href="convention.html" class="btn btn-outline">Back to Event</a>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    (function () {
+      // --- Read query params ---
+      const params = new URLSearchParams(window.location.search);
+      const name = (params.get('name') || '').trim();
+      let id = (params.get('id') || '').trim().toUpperCase();
+
+      function genId() {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let s = '';
+        for (let i = 0; i < 10; i++) s += chars[Math.floor(Math.random() * chars.length)];
+        return s;
+      }
+      if (!/^[A-Z0-9]{6,14}$/.test(id)) id = genId();
+
+      // --- Fill ticket ---
+      if (name) document.getElementById('tk-name').textContent = name;
+      document.getElementById('tk-ticketno').textContent = id;
+      document.title = (name ? name + ' — ' : '') + 'CCC 2026 Ticket';
+
+      // --- Deterministic barcode from the ticket id ---
+      const barcode = document.getElementById('tk-barcode');
+      let seed = 0;
+      for (let i = 0; i < id.length; i++) seed = (seed * 31 + id.charCodeAt(i)) >>> 0;
+      function rand() { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; }
+      const BARS = 46;
+      for (let i = 0; i < BARS; i++) {
+        const bar = document.createElement('span');
+        bar.style.width = (1 + Math.round(rand() * 3)) + 'px';
+        bar.style.opacity = rand() > 0.12 ? '1' : '0'; // occasional gap
+        barcode.appendChild(bar);
+      }
+
+      // --- Responsive scale (display only) ---
+      const ticket = document.getElementById('ticket');
+      const scaleWrap = document.querySelector('.tk-scale');
+      function fit() {
+        const avail = Math.min(document.querySelector('.tk-page').clientWidth - 40, 920);
+        const scale = Math.min(1, avail / 920);
+        scaleWrap.style.transform = 'scale(' + scale + ')';
+        scaleWrap.style.height = (ticket.offsetHeight * scale) + 'px';
+      }
+      window.addEventListener('resize', fit);
+      window.addEventListener('load', fit);
+      fit();
+
+      // --- Download as PNG (capture at natural size) ---
+      document.getElementById('downloadBtn').addEventListener('click', function () {
+        const btn = this;
+        const original = btn.innerHTML;
+        btn.innerHTML = 'Preparing...';
+        btn.disabled = true;
+
+        const run = function () {
+          html2canvas(ticket, { scale: 2, backgroundColor: null, useCORS: true, logging: false })
+            .then(function (canvas) {
+              const link = document.createElement('a');
+              link.download = 'ccc-2026-ticket-' + id + '.png';
+              link.href = canvas.toDataURL('image/png');
+              link.click();
+              btn.innerHTML = original;
+              btn.disabled = false;
+            })
+            .catch(function () {
+              alert('Sorry, the ticket could not be downloaded. Please screenshot it instead.');
+              btn.innerHTML = original;
+              btn.disabled = false;
+            });
+        };
+
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(run);
+        } else {
+          run();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
