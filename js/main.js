@@ -358,15 +358,14 @@ window.addEventListener('load', setActiveNavLink);
 
 /* ----------------------------------------
    UPCOMING EVENT MODAL — CCC 2026
-   Shows once per session, 10s after load.
+   Shows 10s after load on every page except
+   the CCC 2026 event page.
    ---------------------------------------- */
 (function () {
   const path = window.location.pathname;
 
-  // Don't show on the event page itself or the ticket page
+  // Don't show on the CCC 2026 event page itself (or its ticket page)
   if (/convention\.html$/.test(path) || /ticket\.html$/.test(path)) return;
-  // Only once per browsing session
-  try { if (sessionStorage.getItem('cccModalShown')) return; } catch (e) {}
 
   const prefix = path.indexOf('/academy/') !== -1 ? '../' : '';
 
@@ -412,6 +411,5 @@ window.addEventListener('load', setActiveNavLink);
       requestAnimationFrame(function () { overlay.classList.add('open'); });
     });
     document.addEventListener('keydown', onKey);
-    try { sessionStorage.setItem('cccModalShown', '1'); } catch (e) {}
   }, 10000);
 })();
