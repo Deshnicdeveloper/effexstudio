@@ -530,6 +530,17 @@ p:last-child {
   line-height: 1.15;
   margin-bottom: 1.5rem;
   max-width: 900px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Keep the long hero headline from overflowing on small screens */
+@media (max-width: 600px) {
+  .hero-headline {
+    font-size: clamp(2.25rem, 10vw, 3.25rem);
+    line-height: 1.12;
+  }
 }
 
 .hero-subtext {
