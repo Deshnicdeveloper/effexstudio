@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin Dashboard · CCC 2026 Registrations</title>
+  <link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaEtQJrVyx3cmOvWxxtN1TvFVDAKm7QWOvMA&s">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+  <style>
+    :root {
+      --navy: #0F1A3C;
+      --navy-2: #16234a;
+      --navy-3: #101b3a;
+      --blue: #2E8BFF;
+      --blue-light: #5AA7FF;
+      --blue-pale: #DCEBFF;
+      --white: #FAFAF7;
+      --gray-100: #E8E6E0;
+      --gray-300: #B8B5AE;
+      --gray-500: #7A7870;
+      --gray-700: #2A3654;
+      --wa: #25D366;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(1200px 600px at 15% -5%, rgba(46,139,255,0.14), transparent 55%), var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    .logo {
+      font-weight: 700; font-size: 1.25rem; letter-spacing: -0.01em;
+      display: inline-flex; align-items: baseline; gap: 0.25rem;
+    }
+    .logo .eff { color: var(--white); }
+    .logo .ex { color: var(--blue); }
+    .logo .media { color: var(--gray-300); font-weight: 400; font-size: 0.95rem; }
+
+    /* ---------- LOGIN ---------- */
+    .login-wrap {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .login-card {
+      width: 100%; max-width: 400px;
+      background: linear-gradient(135deg, var(--navy-2), var(--navy-3));
+      border: 1px solid var(--gray-700); border-radius: 18px;
+      padding: 2.5rem 2rem; box-shadow: 0 30px 60px -20px rgba(0,0,0,0.6);
+    }
+    .login-card .logo { margin-bottom: 0.4rem; }
+    .login-eyebrow {
+      font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--blue-light); margin: 1.2rem 0 0.35rem;
+    }
+    .login-card h1 { font-size: 1.4rem; font-weight: 600; margin-bottom: 1.6rem; }
+    .field { margin-bottom: 1.1rem; }
+    .field label {
+      display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--gray-300); margin-bottom: 0.45rem;
+    }
+    .field input {
+      width: 100%; padding: 0.8rem 0.95rem; border-radius: 10px;
+      border: 1px solid var(--gray-700); background: rgba(255,255,255,0.04);
+      color: var(--white); font-family: inherit; font-size: 0.95rem;
+      transition: border-color .2s, background .2s;
+    }
+    .field input:focus { outline: none; border-color: var(--blue); background: rgba(46,139,255,0.06); }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      font-family: inherit; font-weight: 600; font-size: 0.92rem; cursor: pointer;
+      border-radius: 10px; padding: 0.8rem 1.2rem; border: 1px solid var(--blue);
+      background: var(--blue); color: var(--white); transition: all .2s;
+    }
+    .btn:hover { background: var(--blue-light); border-color: var(--blue-light); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-ghost { background: transparent; color: var(--blue); }
+    .btn-ghost:hover { background: rgba(46,139,255,0.1); }
+    .btn-block { width: 100%; }
+    .hint {
+      margin-top: 1.2rem; font-size: 0.78rem; color: var(--gray-500);
+      background: rgba(255,255,255,0.03); border: 1px dashed var(--gray-700);
+      border-radius: 10px; padding: 0.7rem 0.85rem; line-height: 1.5;
+    }
+    .hint code { color: var(--blue-light); }
+    .err {
+      color: #ff8080; font-size: 0.82rem; margin-top: 0.6rem; min-height: 1rem;
+    }
+
+    /* ---------- DASHBOARD ---------- */
+    .app { display: none; }
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      padding: 1.1rem clamp(1rem, 4vw, 2.5rem);
+      border-bottom: 1px solid var(--gray-700);
+      background: rgba(15,26,60,0.7); backdrop-filter: blur(10px);
+      position: sticky; top: 0; z-index: 20;
+    }
+    .topbar .right { display: flex; align-items: center; gap: 0.6rem; }
+    .container { max-width: 1200px; margin: 0 auto; padding: clamp(1.25rem, 4vw, 2.5rem); }
+    .page-head { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
+    .page-head h1 { font-size: 1.6rem; font-weight: 600; }
+    .page-head p { color: var(--gray-300); font-size: 0.9rem; margin-top: 0.3rem; }
+
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin-bottom: 1.6rem; }
+    .stat {
+      background: linear-gradient(135deg, var(--navy-2), var(--navy-3));
+      border: 1px solid var(--gray-700); border-radius: var(--radius);
+      padding: 1.2rem 1.3rem;
+    }
+    .stat .num { font-size: 1.9rem; font-weight: 700; color: var(--blue-light); }
+    .stat .lbl { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray-300); margin-top: 0.2rem; }
+
+    .toolbar { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; margin-bottom: 1.1rem; }
+    .search {
+      flex: 1; min-width: 200px; display: flex; align-items: center; gap: 0.5rem;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--gray-700);
+      border-radius: 10px; padding: 0.55rem 0.85rem;
+    }
+    .search input { flex: 1; background: none; border: none; color: var(--white); font-family: inherit; font-size: 0.9rem; }
+    .search input:focus { outline: none; }
+    .search svg { width: 16px; height: 16px; stroke: var(--gray-300); flex-shrink: 0; }
+
+    .table-wrap {
+      background: linear-gradient(135deg, var(--navy-2), var(--navy-3));
+      border: 1px solid var(--gray-700); border-radius: var(--radius); overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.09em;
+      color: var(--gray-300); font-weight: 600; padding: 0.9rem 1.1rem;
+      border-bottom: 1px solid var(--gray-700); white-space: nowrap;
+    }
+    tbody td { padding: 0.85rem 1.1rem; border-bottom: 1px solid rgba(42,54,84,0.5); font-size: 0.9rem; vertical-align: middle; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr { transition: background .15s; }
+    tbody tr:hover { background: rgba(46,139,255,0.06); }
+    .name-btn {
+      background: none; border: none; color: var(--white); font-family: inherit; font-size: 0.92rem;
+      font-weight: 500; cursor: pointer; text-align: left; padding: 0; display: inline-flex; align-items: center; gap: 0.45rem;
+    }
+    .name-btn:hover { color: var(--blue-light); text-decoration: underline; }
+    .idx { color: var(--gray-500); font-size: 0.8rem; width: 34px; }
+    .muted { color: var(--gray-300); }
+    .phone-cell { display: inline-flex; align-items: center; gap: 0.6rem; white-space: nowrap; }
+    .wa-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+      background: rgba(37,211,102,0.14); border: 1px solid rgba(37,211,102,0.35);
+      cursor: pointer; transition: all .18s;
+    }
+    .wa-btn:hover { background: var(--wa); border-color: var(--wa); transform: translateY(-1px); }
+    .wa-btn svg { width: 16px; height: 16px; fill: var(--wa); transition: fill .18s; }
+    .wa-btn:hover svg { fill: #fff; }
+
+    .empty { padding: 3rem 1rem; text-align: center; color: var(--gray-300); }
+
+    .pagination { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.2rem; }
+    .pagination .info { font-size: 0.82rem; color: var(--gray-300); }
+    .pager { display: flex; gap: 0.4rem; align-items: center; }
+    .pager button {
+      min-width: 38px; height: 38px; padding: 0 0.6rem; border-radius: 9px;
+      border: 1px solid var(--gray-700); background: rgba(255,255,255,0.03);
+      color: var(--white); font-family: inherit; font-size: 0.85rem; cursor: pointer; transition: all .15s;
+    }
+    .pager button:hover:not(:disabled) { border-color: var(--blue); color: var(--blue-light); }
+    .pager button.active { background: var(--blue); border-color: var(--blue); color: #fff; font-weight: 600; }
+    .pager button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ---------- MODAL ---------- */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 50;
+      background: rgba(6,11,26,0.72); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      width: 100%; max-width: 520px;
+      background: linear-gradient(135deg, var(--navy-2), var(--navy-3));
+      border: 1px solid var(--gray-700); border-radius: 18px;
+      box-shadow: 0 40px 80px -25px rgba(0,0,0,0.7);
+      max-height: 90vh; overflow-y: auto;
+    }
+    .modal-head {
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
+      padding: 1.5rem 1.6rem 1rem;
+    }
+    .modal-head .who h2 { font-size: 1.35rem; font-weight: 600; }
+    .modal-head .who .tid { font-size: 0.78rem; color: var(--blue-light); letter-spacing: 0.05em; margin-top: 0.25rem; }
+    .modal-close {
+      background: none; border: none; color: var(--gray-300); font-size: 1.5rem; cursor: pointer; line-height: 1; padding: 0.2rem;
+    }
+    .modal-close:hover { color: var(--white); }
+    .modal-body { padding: 0 1.6rem 1.6rem; }
+    .detail { margin-bottom: 1.05rem; }
+    .detail .k { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--gray-300); margin-bottom: 0.28rem; }
+    .detail .v { font-size: 0.95rem; line-height: 1.55; word-break: break-word; }
+    .detail .v.reason { background: rgba(255,255,255,0.03); border: 1px solid var(--gray-700); border-radius: 10px; padding: 0.8rem 0.9rem; color: var(--gray-100); }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.05rem; }
+    .modal-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 0.4rem; }
+    .btn-wa { background: var(--wa); border-color: var(--wa); }
+    .btn-wa:hover { background: #1fb857; border-color: #1fb857; }
+
+    @media (max-width: 620px) {
+      .hide-sm { display: none; }
+      .detail-grid { grid-template-columns: 1fr; }
+      thead th:nth-child(3), tbody td:nth-child(3) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===================== LOGIN ===================== -->
+  <div class="login-wrap" id="loginView">
+    <div class="login-card">
+      <div class="logo"><span class="eff">Eff</span><span class="ex">ex</span> <span class="media">Media</span></div>
+      <div class="login-eyebrow">CCC 2026 · Admin</div>
+      <h1>Sign in to the dashboard</h1>
+      <form id="loginForm">
+        <div class="field">
+          <label for="username">Username</label>
+          <input type="text" id="username" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn-block" id="loginBtn">Sign In</button>
+        <div class="err" id="loginErr"></div>
+      </form>
+      <div class="hint">
+        <strong>Quick login</strong><br>
+        Username: <code>admin</code><br>
+        Password: <code>EffexCCC2026!</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== DASHBOARD ===================== -->
+  <div class="app" id="appView">
+    <div class="topbar">
+      <div class="logo"><span class="eff">Eff</span><span class="ex">ex</span> <span class="media">Media</span></div>
+      <div class="right">
+        <button class="btn btn-ghost" id="downloadBtn" title="Download the full list as a branded PDF">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span class="hide-sm">Download PDF</span>
+        </button>
+        <button class="btn btn-ghost" id="logoutBtn">Log out</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="page-head">
+        <div>
+          <h1>Convention Registrations</h1>
+          <p>Cameroon Creative Convention (CCC) 2026 · Yaoundé</p>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="num" id="statTotal">0</div><div class="lbl">Total Registered</div></div>
+        <div class="stat"><div class="num" id="statShowing">0</div><div class="lbl">Showing (this page)</div></div>
+        <div class="stat"><div class="num" id="statPages">1</div><div class="lbl">Pages</div></div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="searchInput" placeholder="Search by name, email or phone…">
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="idx">#</th>
+              <th>Name</th>
+              <th class="hide-sm">Email</th>
+              <th>Phone</th>
+              <th class="hide-sm">Registered</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        <div class="empty" id="emptyState" style="display:none;">No registrations found.</div>
+      </div>
+
+      <div class="pagination">
+        <div class="info" id="pageInfo"></div>
+        <div class="pager" id="pager"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== DETAIL MODAL ===================== -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-head">
+        <div class="who">
+          <h2 id="mName">—</h2>
+          <div class="tid" id="mTicket"></div>
+        </div>
+        <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="detail-grid">
+          <div class="detail">
+            <div class="k">Email</div>
+            <div class="v" id="mEmail"></div>
+          </div>
+          <div class="detail">
+            <div class="k">Phone</div>
+            <div class="v" id="mPhone"></div>
+          </div>
+          <div class="detail">
+            <div class="k">Day Registered</div>
+            <div class="v" id="mDay"></div>
+          </div>
+          <div class="detail">
+            <div class="k">Time Registered</div>
+            <div class="v" id="mTime"></div>
+          </div>
+        </div>
+        <div class="detail">
+          <div class="k">Reason to Attend</div>
+          <div class="v reason" id="mReason"></div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn btn-wa" id="mWhatsapp">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35zM12.05 21.5h-.01a9.5 9.5 0 0 1-4.83-1.33l-.35-.2-3.59.94.96-3.5-.23-.36a9.46 9.46 0 0 1-1.45-5.05c0-5.23 4.26-9.49 9.5-9.49 2.54 0 4.92.99 6.72 2.78a9.43 9.43 0 0 1 2.78 6.72c0 5.24-4.26 9.5-9.5 9.5zm8.08-17.58A11.4 11.4 0 0 0 12.05.5C5.76.5.65 5.61.65 11.9c0 2.09.55 4.13 1.59 5.93L.5 23.5l5.82-1.53a11.35 11.35 0 0 0 5.72 1.46h.01c6.29 0 11.4-5.11 11.4-11.4 0-3.05-1.19-5.91-3.32-8.11z"/></svg>
+            Message on WhatsApp
+          </button>
+          <a class="btn btn-ghost" id="mEmailLink">Send Email</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ---------------------------------------------------------------
+    // State
+    // ---------------------------------------------------------------
+    const TOKEN_KEY = 'ccc_admin_token';
+    let state = { page: 1, q: '', items: [], total: 0, totalPages: 1, totalAll: 0 };
+
+    const $ = (id) => document.getElementById(id);
+    function token() { return localStorage.getItem(TOKEN_KEY); }
+    function setToken(t) { localStorage.setItem(TOKEN_KEY, t); }
+    function clearToken() { localStorage.removeItem(TOKEN_KEY); }
+
+    // ---------------------------------------------------------------
+    // Auth flow
+    // ---------------------------------------------------------------
+    async function login(e) {
+      e.preventDefault();
+      const btn = $('loginBtn');
+      $('loginErr').textContent = '';
+      btn.disabled = true; btn.textContent = 'Signing in…';
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: $('username').value, password: $('password').value }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Login failed');
+        setToken(data.token);
+        showApp();
+        load();
+      } catch (err) {
+        $('loginErr').textContent = err.message;
+      } finally {
+        btn.disabled = false; btn.textContent = 'Sign In';
+      }
+    }
+
+    async function logout() {
+      try {
+        await fetch('/api/admin/logout', {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + token() },
+        });
+      } catch (_) {}
+      clearToken();
+      showLogin();
+    }
+
+    function showApp() { $('loginView').style.display = 'none'; $('appView').style.display = 'block'; }
+    function showLogin() { $('appView').style.display = 'none'; $('loginView').style.display = 'flex'; }
+
+    // ---------------------------------------------------------------
+    // Data loading
+    // ---------------------------------------------------------------
+    async function load() {
+      const params = new URLSearchParams({ page: state.page, q: state.q });
+      let res;
+      try {
+        res = await fetch('/api/admin/registrations?' + params.toString(), {
+          headers: { 'Authorization': 'Bearer ' + token() },
+        });
+      } catch (err) {
+        alert('Could not reach the server.');
+        return;
+      }
+      if (res.status === 401) { clearToken(); showLogin(); return; }
+      const data = await res.json();
+      state.items = data.items || [];
+      state.total = data.total || 0;
+      state.totalPages = data.totalPages || 1;
+      state.page = data.page || 1;
+      state.totalAll = data.totalAll || 0;
+      render();
+    }
+
+    // ---------------------------------------------------------------
+    // Rendering
+    // ---------------------------------------------------------------
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => (
+        { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+      ));
+    }
+    function fmtDate(iso) {
+      const d = new Date(iso);
+      if (isNaN(d)) return '—';
+      return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+    }
+    function fmtDay(iso) {
+      const d = new Date(iso);
+      if (isNaN(d)) return '—';
+      return d.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+    function fmtTime(iso) {
+      const d = new Date(iso);
+      if (isNaN(d)) return '—';
+      return d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }
+    function digits(phone) { return String(phone || '').replace(/[^\d]/g, ''); }
+
+    function waUrl(phone, name) {
+      const msg = `Hello ${name || ''},\n\nThank you for registering for the Cameroon Creative Convention (CCC) 2026. We look forward to welcoming you.\n\n— Effex Team`;
+      return 'https://wa.me/' + digits(phone) + '?text=' + encodeURIComponent(msg);
+    }
+
+    function render() {
+      const tbody = $('tbody');
+      const empty = $('emptyState');
+      tbody.innerHTML = '';
+
+      $('statTotal').textContent = state.total;
+      $('statShowing').textContent = state.items.length;
+      $('statPages').textContent = state.totalPages;
+
+      if (!state.items.length) {
+        empty.style.display = 'block';
+      } else {
+        empty.style.display = 'none';
+        const startIdx = (state.page - 1) * 20;
+        state.items.forEach((r, i) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="idx">${startIdx + i + 1}</td>
+            <td><button class="name-btn" data-id="${esc(r.id)}">${esc(r.fullName)}</button></td>
+            <td class="hide-sm muted">${esc(r.email)}</td>
+            <td>
+              <span class="phone-cell">
+                <span>${esc(r.phone)}</span>
+                <a class="wa-btn" href="${waUrl(r.phone, r.fullName)}" target="_blank" rel="noopener" title="Send WhatsApp message" onclick="event.stopPropagation()">
+                  <svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z"/></svg>
+                </a>
+              </span>
+            </td>
+            <td class="hide-sm muted">${fmtDate(r.createdAt)}</td>
+          `;
+          tr.querySelector('.name-btn').addEventListener('click', () => openModal(r.id));
+          tbody.appendChild(tr);
+        });
+      }
+
+      renderPager();
+    }
+
+    function renderPager() {
+      const info = $('pageInfo');
+      const pager = $('pager');
+      const start = state.total === 0 ? 0 : (state.page - 1) * 20 + 1;
+      const end = Math.min(state.page * 20, state.total);
+      info.textContent = state.total ? `Showing ${start}–${end} of ${state.total}` : 'No results';
+
+      pager.innerHTML = '';
+      if (state.totalPages <= 1) return;
+
+      const mk = (label, page, opts = {}) => {
+        const b = document.createElement('button');
+        b.textContent = label;
+        if (opts.active) b.classList.add('active');
+        if (opts.disabled) b.disabled = true;
+        else b.addEventListener('click', () => { state.page = page; load(); });
+        return b;
+      };
+
+      pager.appendChild(mk('‹', state.page - 1, { disabled: state.page <= 1 }));
+
+      // windowed page numbers
+      const pages = [];
+      const win = 2;
+      for (let p = 1; p <= state.totalPages; p++) {
+        if (p === 1 || p === state.totalPages || (p >= state.page - win && p <= state.page + win)) pages.push(p);
+        else if (pages[pages.length - 1] !== '…') pages.push('…');
+      }
+      pages.forEach((p) => {
+        if (p === '…') {
+          const span = document.createElement('button');
+          span.textContent = '…'; span.disabled = true; pager.appendChild(span);
+        } else {
+          pager.appendChild(mk(p, p, { active: p === state.page }));
+        }
+      });
+
+      pager.appendChild(mk('›', state.page + 1, { disabled: state.page >= state.totalPages }));
+    }
+
+    // ---------------------------------------------------------------
+    // Detail modal
+    // ---------------------------------------------------------------
+    function openModal(id) {
+      const r = state.items.find((x) => x.id === id);
+      if (!r) return;
+      $('mName').textContent = r.fullName;
+      $('mTicket').textContent = r.ticketId ? 'Ticket N° ' + r.ticketId : '';
+      $('mEmail').textContent = r.email;
+      $('mPhone').textContent = r.phone;
+      $('mDay').textContent = fmtDay(r.createdAt);
+      $('mTime').textContent = fmtTime(r.createdAt);
+      $('mReason').textContent = r.reason || '—';
+      $('mWhatsapp').onclick = () => window.open(waUrl(r.phone, r.fullName), '_blank');
+      $('mEmailLink').href = 'mailto:' + r.email + '?subject=' + encodeURIComponent('CCC 2026 Registration');
+      $('modalOverlay').classList.add('open');
+    }
+    function closeModal() { $('modalOverlay').classList.remove('open'); }
+
+    // ---------------------------------------------------------------
+    // PDF export (full list, Effex-branded)
+    // ---------------------------------------------------------------
+    async function downloadPDF() {
+      const btn = $('downloadBtn');
+      const original = btn.innerHTML;
+      btn.disabled = true;
+      // Fetch ALL registrations (loop through pages) for a complete export.
+      let all = [];
+      try {
+        let page = 1, totalPages = 1;
+        do {
+          const res = await fetch('/api/admin/registrations?page=' + page + '&q=' + encodeURIComponent(state.q), {
+            headers: { 'Authorization': 'Bearer ' + token() },
+          });
+          if (res.status === 401) { clearToken(); showLogin(); return; }
+          const data = await res.json();
+          all = all.concat(data.items || []);
+          totalPages = data.totalPages || 1;
+          page++;
+        } while (page <= totalPages);
+      } catch (err) {
+        alert('Could not fetch the full list for export.');
+        btn.disabled = false; btn.innerHTML = original;
+        return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+      const pageW = doc.internal.pageSize.getWidth();
+
+      // ---- Branded header band ----
+      const NAVY = [15, 26, 60];
+      const BLUE = [46, 139, 255];
+      doc.setFillColor(...NAVY);
+      doc.rect(0, 0, pageW, 70, 'F');
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(20);
+      doc.setTextColor(250, 250, 247);
+      doc.text('Eff', 40, 38);
+      const effW = doc.getTextWidth('Eff');
+      doc.setTextColor(...BLUE);
+      doc.text('ex', 40 + effW, 38);
+      const exW = doc.getTextWidth('ex');
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(13);
+      doc.setTextColor(184, 181, 174);
+      doc.text('Media', 40 + effW + exW + 6, 38);
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(13);
+      doc.setTextColor(250, 250, 247);
+      doc.text('Cameroon Creative Convention (CCC) 2026', 40, 58);
+
+      const stamp = new Date().toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      doc.setTextColor(220, 235, 255);
+      doc.text('Registrations · ' + all.length + ' total', pageW - 40, 32, { align: 'right' });
+      doc.text('Generated: ' + stamp, pageW - 40, 48, { align: 'right' });
+
+      // ---- Table ----
+      const rows = all.map((r, i) => [
+        i + 1,
+        r.fullName || '',
+        r.email || '',
+        r.phone || '',
+        r.ticketId || '',
+        fmtDate(r.createdAt) + ' ' + fmtTime(r.createdAt),
+      ]);
+
+      doc.autoTable({
+        startY: 88,
+        head: [['#', 'Full Name', 'Email', 'Phone', 'Ticket N°', 'Registered']],
+        body: rows,
+        theme: 'striped',
+        styles: { font: 'helvetica', fontSize: 9, cellPadding: 5, textColor: [40, 40, 40] },
+        headStyles: { fillColor: BLUE, textColor: [255, 255, 255], fontStyle: 'bold' },
+        alternateRowStyles: { fillColor: [244, 248, 255] },
+        columnStyles: { 0: { cellWidth: 30, halign: 'right' } },
+        margin: { left: 40, right: 40 },
+        didDrawPage: (d) => {
+          // Footer
+          const h = doc.internal.pageSize.getHeight();
+          doc.setFontSize(8);
+          doc.setTextColor(150, 150, 150);
+          doc.text('Effex Studios Ltd & Effex Academy · Confidential', 40, h - 18);
+          doc.text('Page ' + doc.internal.getNumberOfPages(), pageW - 40, h - 18, { align: 'right' });
+        },
+      });
+
+      doc.save('CCC-2026-Registrations.pdf');
+      btn.disabled = false; btn.innerHTML = original;
+    }
+
+    // ---------------------------------------------------------------
+    // Events
+    // ---------------------------------------------------------------
+    $('loginForm').addEventListener('submit', login);
+    $('logoutBtn').addEventListener('click', logout);
+    $('downloadBtn').addEventListener('click', downloadPDF);
+    $('modalClose').addEventListener('click', closeModal);
+    $('modalOverlay').addEventListener('click', (e) => { if (e.target === $('modalOverlay')) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    let searchTimer;
+    $('searchInput').addEventListener('input', (e) => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => { state.q = e.target.value.trim(); state.page = 1; load(); }, 300);
+    });
+
+    // ---------------------------------------------------------------
+    // Boot
+    // ---------------------------------------------------------------
+    if (token()) { showApp(); load(); } else { showLogin(); }
+  </script>
+</body>
+</html>

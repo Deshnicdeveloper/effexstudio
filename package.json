@@ -1,0 +1,14 @@
+{
+  "name": "effex-ccc-backend",
+  "version": "1.0.0",
+  "description": "Registration backend and admin dashboard for the Cameroon Creative Convention (CCC) 2026.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "private": true,
+  "license": "UNLICENSED"
+}
