@@ -599,8 +599,8 @@
       return s;
     }
 
-    // Registration Form Handling - notify via WhatsApp, then issue a ticket
-    document.getElementById('submitBtn').addEventListener('click', function() {
+    // Registration Form Handling - save to backend, then issue a ticket
+    document.getElementById('submitBtn').addEventListener('click', async function() {
       const fullName = document.getElementById('fullName').value.trim();
       const email = document.getElementById('email').value.trim();
       const phone = document.getElementById('phone').value.trim();
@@ -618,31 +618,31 @@
       }
 
       const btn = this;
-      btn.innerHTML = 'Issuing your ticket...';
+      const originalLabel = btn.innerHTML;
+      btn.innerHTML = 'Saving your registration...';
       btn.disabled = true;
 
-      const ticketId = genTicketId();
-
-      // Notify the organizer via WhatsApp (opens in a new tab)
-      const whatsappNumber = '237681922914';
-      const whatsappMessage = `*NEW CCC 2026 REGISTRATION - Cameroon Creative Convention*
-
-*Ticket N°:* ${ticketId}
-*Full Name:* ${fullName}
-*Email:* ${email}
-*Phone:* ${phone}
-
-*Reason to Attend:*
-${reason}
-
----
-Sent from the Effex website`;
-      const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
-      window.open(whatsappURL, '_blank');
+      let ticketId;
+      try {
+        // Persist the registration to the backend.
+        const res = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fullName, email, phone, reason })
+        });
+        const data = await res.json().catch(function () { return {}; });
+        if (!res.ok) throw new Error(data.error || 'Registration failed. Please try again.');
+        ticketId = data.ticketId || genTicketId();
+      } catch (err) {
+        alert(err.message || 'We could not save your registration. Please try again.');
+        btn.innerHTML = originalLabel;
+        btn.disabled = false;
+        return;
+      }
 
       // Take the attendee to their downloadable ticket
       const ticketURL = 'ticket.html?name=' + encodeURIComponent(fullName) + '&id=' + ticketId;
-      setTimeout(function () { window.location.href = ticketURL; }, 300);
+      window.location.href = ticketURL;
     });
   </script>
 </body>
