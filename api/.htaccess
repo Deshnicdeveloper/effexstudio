@@ -1,0 +1,23 @@
+RewriteEngine On
+
+# Make sure the Authorization header reaches PHP (needed for admin auth).
+# This must run before the [L] endpoint rules below.
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# Map the clean API paths the site uses onto the PHP handlers.
+RewriteRule ^register/?$ register.php [L,QSA]
+RewriteRule ^admin/login/?$ admin-login.php [L,QSA]
+RewriteRule ^admin/logout/?$ admin-logout.php [L,QSA]
+RewriteRule ^admin/registrations/?$ admin-registrations.php [L,QSA]
+
+# Never serve the shared library directly.
+<Files "lib.php">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</Files>

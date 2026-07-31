@@ -1,15 +1,24 @@
 # CCC 2026 — Registration Backend & Admin Dashboard
 
 Captures Cameroon Creative Convention (CCC) 2026 registrations and powers an
-admin dashboard. It runs two ways:
+admin dashboard. It runs three ways — all exposing the **same API**
+(`/api/register`, `/api/admin/*`), so the website and dashboard never change:
 
-- **On Netlify (production)** — serverless **Netlify Functions** + **Netlify Blobs**
-  storage. This is what powers `effexstudio.netlify.app` / `effex-studios.com`.
-- **Locally** — a zero-dependency Node server (`server.js`) that stores to
-  `data/registrations.json`, handy for quick local testing.
+- **On Hostinger (production — effex-studios.com)** — plain **PHP** in `api/`
+  storing to `data/registrations.json`. No setup: upload the files and it works.
+- **On Netlify** — serverless Netlify Functions + Netlify Blobs storage
+  (`netlify/functions/`).
+- **Locally** — a zero-dependency Node server (`server.js`).
 
-Both expose the **same API** (`/api/register`, `/api/admin/*`), so the website and
-dashboard code are identical in both environments.
+## Deploying to Hostinger (effex-studios.com)
+
+Upload the whole project (including the `api/` and `data/` folders and their
+`.htaccess` files) to `public_html`. That's it — Hostinger runs the PHP
+endpoints natively and registrations append to `data/registrations.json`.
+
+- The `data/.htaccess` blocks anyone from downloading the JSON file directly.
+- To change the admin login, edit the constants at the top of `api/lib.php`
+  (`ADMIN_USER`, `ADMIN_PASS`, and set a random `ADMIN_SECRET`).
 
 ---
 
