@@ -153,6 +153,10 @@
     .ccc-card p { color: var(--gray-300); font-size: var(--text-sm); line-height: 1.65; }
 
     /* ---------- PROGRAMME TIMELINE ---------- */
+    /* The left column pins beside the scrolling timeline on wide screens only.
+       On stacked (mobile) layouts it must stay static, otherwise it hangs in
+       place while the timeline scrolls over the "Reserve your seat" button. */
+    .ccc-programme-aside { position: sticky; top: 120px; }
     .ccc-timeline { position: relative; max-width: 820px; }
     .ccc-timeline::before {
       content: ''; position: absolute; left: 27px; top: 8px; bottom: 8px;
@@ -198,6 +202,8 @@
       .ccc-media { aspect-ratio: 16/10; }
       .ccc-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
       .ccc-register-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      /* Stop the programme heading/button from sticking once columns stack. */
+      .ccc-programme-aside { position: static; top: auto; margin-bottom: 2.5rem; }
     }
 
     /* ---------- TABLET / MOBILE ---------- */
@@ -407,7 +413,7 @@
   <section class="section" id="programme" style="border-top: 1px solid var(--gray-700);">
     <div class="container">
       <div class="ccc-split" style="align-items: start;">
-        <div class="reveal" style="position: sticky; top: 120px;">
+        <div class="reveal ccc-programme-aside">
           <span class="ccc-kicker">Programme Highlights</span>
           <h2 style="font-size: var(--text-4xl); line-height: 1.15; margin-bottom: 1.25rem;">One day,<br>packed with value.</h2>
           <p style="color: var(--gray-300); font-size: var(--text-lg); line-height: 1.7;">
