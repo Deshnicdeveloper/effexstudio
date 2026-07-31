@@ -68,7 +68,9 @@
     .tk-pill.blue { background: #2E8BFF; }
     .tk-pill.orange { background: #e8862a; }
 
-    .tk-divider { height: 1px; background: linear-gradient(90deg, rgba(255,255,255,.25), rgba(255,255,255,.03)); margin: 1.5rem 0 1.6rem; }
+    /* Solid hairline (not a gradient): a gradient on a 1px-tall element makes
+       html2canvas build a zero-height pattern and crash the PNG download. */
+    .tk-divider { height: 1px; background: rgba(255,255,255,.16); margin: 1.5rem 0 1.6rem; }
     .tk-holder-label { font-size: 13px; letter-spacing: .22em; text-transform: uppercase; color: #8fa2c2; margin-bottom: .6rem; }
     .tk-name { font-size: 40px; font-weight: 800; line-height: 1.05; margin-bottom: .35rem; word-break: break-word; }
     .tk-role { font-size: 19px; color: #c7d4ea; font-weight: 400; margin-bottom: 1.6rem; }
