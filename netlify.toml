@@ -1,0 +1,9 @@
+# Netlify configuration for the Effex site + CCC 2026 registration backend.
+[build]
+  # The site is static HTML served from the repo root.
+  publish = "."
+  # Serverless API lives here (register, admin login, registrations list…).
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
