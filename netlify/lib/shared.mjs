@@ -6,9 +6,11 @@ import crypto from 'node:crypto';
 
 // Admin credentials + signing secret. Override these in the Netlify UI
 // (Site settings → Environment variables) for production.
-export const ADMIN_USER = process.env.ADMIN_USER || 'admin';
-export const ADMIN_PASS = process.env.ADMIN_PASS || 'EffexCCC2026!';
-const SECRET = process.env.ADMIN_SECRET || 'effex-ccc-2026-change-this-secret';
+// .trim() guards against a stray space / newline accidentally copied into the
+// value in the Netlify UI, which is a common cause of "invalid password".
+export const ADMIN_USER = (process.env.ADMIN_USER || 'admin').trim();
+export const ADMIN_PASS = (process.env.ADMIN_PASS || 'EffexCCC2026!').trim();
+const SECRET = (process.env.ADMIN_SECRET || 'effex-ccc-2026-change-this-secret').trim();
 
 // ---- JSON response helper ----
 export function json(obj, status = 200) {
