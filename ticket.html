@@ -181,7 +181,6 @@
     </div>
   </main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
     (function () {
       // --- Read query params ---
@@ -228,7 +227,257 @@
       window.addEventListener('load', fit);
       fit();
 
-      // --- Download as PNG (capture at natural size) ---
+      // =====================================================================
+      // Download as PNG — drawn directly on a canvas (no DOM capture library,
+      // so the output is identical on every device and browser).
+      // =====================================================================
+      const W = 920, H = 580, STUB = 240, MAIN_W = W - STUB, PAD = 52;
+
+      function rr(ctx, x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.arcTo(x + w, y, x + w, y + h, r);
+        ctx.arcTo(x + w, y + h, x, y + h, r);
+        ctx.arcTo(x, y + h, x, y, r);
+        ctx.arcTo(x, y, x + w, y, r);
+        ctx.closePath();
+      }
+
+      // Draw text with manual letter-spacing (works everywhere).
+      function spaced(ctx, text, x, y, ls) {
+        let cx = x;
+        for (const ch of text) {
+          ctx.fillText(ch, cx, y);
+          cx += ctx.measureText(ch).width + ls;
+        }
+        return cx - ls;
+      }
+      function spacedWidth(ctx, text, ls) {
+        let w = 0;
+        for (const ch of text) w += ctx.measureText(ch).width + ls;
+        return w - ls;
+      }
+
+      function wrapLines(ctx, text, maxW) {
+        const words = text.split(' ');
+        const lines = [];
+        let line = '';
+        for (const w of words) {
+          const trial = line ? line + ' ' + w : w;
+          if (ctx.measureText(trial).width <= maxW || !line) line = trial;
+          else { lines.push(line); line = w; }
+        }
+        if (line) lines.push(line);
+        return lines;
+      }
+
+      function font(weight, size) {
+        return weight + ' ' + size + 'px Poppins, Arial, sans-serif';
+      }
+
+      function drawTicket() {
+        const S = 2; // export at 2x for crispness
+        const canvas = document.createElement('canvas');
+        canvas.width = W * S; canvas.height = H * S;
+        const ctx = canvas.getContext('2d');
+        ctx.scale(S, S);
+        ctx.textBaseline = 'alphabetic';
+
+        // Clip everything to the rounded ticket shape
+        rr(ctx, 0, 0, W, H, 24);
+        ctx.clip();
+
+        // ---------- MAIN PANEL ----------
+        const rad = ctx.createRadialGradient(0, 0, 60, 0, 0, MAIN_W * 1.25);
+        rad.addColorStop(0, '#16294d');
+        rad.addColorStop(0.45, '#0f1e3a');
+        rad.addColorStop(1, '#0a1730');
+        ctx.fillStyle = rad;
+        ctx.fillRect(0, 0, MAIN_W, H);
+
+        // subtle diagonal texture stripes
+        ctx.save();
+        ctx.beginPath(); ctx.rect(0, 0, MAIN_W, H); ctx.clip();
+        ctx.strokeStyle = 'rgba(255,255,255,0.035)';
+        ctx.lineWidth = 2;
+        for (let d = -H; d < MAIN_W + H; d += 16) {
+          ctx.beginPath();
+          ctx.moveTo(d, 0);
+          ctx.lineTo(d + H, H);
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        let y = 62;
+        // eyebrow
+        ctx.fillStyle = '#9fb0cc';
+        ctx.font = font(600, 13);
+        spaced(ctx, 'EFFEX ACADEMY PRESENTS', PAD, y, 3.6);
+
+        // top line: logo + year badge
+        y += 22;
+        const logoGrad = ctx.createLinearGradient(PAD, y, PAD + 56, y + 56);
+        logoGrad.addColorStop(0, '#2E8BFF');
+        logoGrad.addColorStop(1, '#1c5fd6');
+        ctx.fillStyle = logoGrad;
+        rr(ctx, PAD, y, 56, 56, 14); ctx.fill();
+        ctx.fillStyle = '#fff';
+        ctx.font = font(800, 18);
+        ctx.fillText('CCC', PAD + 28 - ctx.measureText('CCC').width / 2, y + 34);
+
+        ctx.fillStyle = '#2E8BFF';
+        const yearW = 78;
+        rr(ctx, MAIN_W - PAD - yearW, y + 12, yearW, 34, 10); ctx.fill();
+        ctx.fillStyle = '#06152e';
+        ctx.font = font(800, 24);
+        ctx.fillText('2026', MAIN_W - PAD - yearW / 2 - ctx.measureText('2026').width / 2, y + 37);
+
+        // wordmark (wraps)
+        y += 56 + 40;
+        ctx.fillStyle = '#ffffff';
+        ctx.font = font(800, 32);
+        const lines = wrapLines(ctx, 'CAMEROON CREATIVE CONVENTION', MAIN_W - PAD * 2);
+        for (const ln of lines) { ctx.fillText(ln, PAD, y); y += 34; }
+
+        // tagline
+        y += 4;
+        ctx.fillStyle = '#4fa0ff';
+        ctx.font = font(700, 15);
+        spaced(ctx, "WHERE CAMEROON'S CREATORS CONNECT", PAD, y, 2.4);
+
+        // pills
+        y += 18;
+        const pillH = 38, pillR = 12, gap = 12;
+        ctx.font = font(700, 15);
+        let px = PAD;
+
+        function pill(bg, label, icon) {
+          const iconW = icon ? 25 : 0;
+          const tw = ctx.measureText(label).width;
+          const pw = 18 + iconW + tw + 18;
+          ctx.fillStyle = bg;
+          rr(ctx, px, y, pw, pillH, pillR); ctx.fill();
+          const cy = y + pillH / 2;
+          ctx.strokeStyle = '#fff';
+          ctx.lineWidth = 2;
+          if (icon === 'cal') {
+            ctx.strokeRect(px + 16, cy - 7, 15, 14);
+            ctx.beginPath();
+            ctx.moveTo(px + 16, cy - 2.5); ctx.lineTo(px + 31, cy - 2.5);
+            ctx.moveTo(px + 20, cy - 10); ctx.lineTo(px + 20, cy - 6);
+            ctx.moveTo(px + 27, cy - 10); ctx.lineTo(px + 27, cy - 6);
+            ctx.stroke();
+          } else if (icon === 'pin') {
+            ctx.beginPath();
+            ctx.arc(px + 23.5, cy - 2.5, 5.5, Math.PI * 0.95, Math.PI * 2.05);
+            ctx.lineTo(px + 23.5, cy + 8);
+            ctx.closePath();
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(px + 23.5, cy - 2.5, 1.8, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+          ctx.fillStyle = '#fff';
+          ctx.fillText(label, px + 18 + iconW, cy + 5.5);
+          px += pw + gap;
+        }
+
+        pill('#dc3a2f', '1 AUG 2026', 'cal');
+        pill('#2E8BFF', 'YAOUNDÉ, CAMEROON', 'pin');
+        pill('#e8862a', 'DAY: FULL DAY', null);
+
+        // divider
+        y += pillH + 28;
+        ctx.fillStyle = 'rgba(255,255,255,0.16)';
+        ctx.fillRect(PAD, y, MAIN_W - PAD * 2, 1);
+
+        // ticket holder
+        y += 32;
+        ctx.fillStyle = '#8fa2c2';
+        ctx.font = font(600, 13);
+        spaced(ctx, 'TICKET HOLDER', PAD, y, 2.9);
+
+        // name (shrink to fit one line; wrap to 2 if still long)
+        y += 42;
+        let nameSize = 40;
+        const holder = (name || 'Guest');
+        ctx.font = font(800, nameSize);
+        while (ctx.measureText(holder).width > MAIN_W - PAD * 2 && nameSize > 24) {
+          nameSize -= 2;
+          ctx.font = font(800, nameSize);
+        }
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(holder, PAD, y);
+
+        // role + admit
+        y += 30;
+        ctx.fillStyle = '#c7d4ea';
+        ctx.font = font(400, 19);
+        ctx.fillText('Attendee', PAD, y);
+        y += 34;
+        ctx.fillStyle = '#7d90b2';
+        ctx.font = font(600, 13);
+        spaced(ctx, 'ADMIT ONE · REGISTERED', PAD, y, 2.6);
+
+        // ---------- STUB ----------
+        ctx.fillStyle = '#f3f6fc';
+        ctx.fillRect(MAIN_W, 0, STUB, H);
+
+        // perforation (dashed line)
+        ctx.strokeStyle = '#0b1424';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([9, 7]);
+        ctx.beginPath();
+        ctx.moveTo(MAIN_W, 0); ctx.lineTo(MAIN_W, H);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // notches
+        ctx.fillStyle = '#0b1424';
+        ctx.beginPath(); ctx.arc(MAIN_W, 0, 13, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(MAIN_W, H, 13, 0, Math.PI * 2); ctx.fill();
+
+        const scx = MAIN_W + STUB / 2;
+        // stub title
+        ctx.fillStyle = '#0f1e3a';
+        ctx.font = font(800, 15);
+        const stW = spacedWidth(ctx, 'CCC · 2026', 2.7);
+        spaced(ctx, 'CCC · 2026', scx - stW / 2, 56, 2.7);
+
+        // barcode — same deterministic bars as the on-screen ticket
+        let bseed = 0;
+        for (let i = 0; i < id.length; i++) bseed = (bseed * 31 + id.charCodeAt(i)) >>> 0;
+        function brand() { bseed = (bseed * 1103515245 + 12345) & 0x7fffffff; return bseed / 0x7fffffff; }
+        const bars = [];
+        let totalW = 0;
+        for (let i = 0; i < BARS; i++) {
+          const bw = 1 + Math.round(brand() * 3);
+          const visible = brand() > 0.12;
+          bars.push({ w: bw, v: visible });
+          totalW += bw + 2;
+        }
+        totalW -= 2;
+        let bx = scx - totalW / 2;
+        const bTop = 86, bH = 210;
+        ctx.fillStyle = '#0f1e3a';
+        for (const b of bars) {
+          if (b.v) ctx.fillRect(bx, bTop, b.w, bH);
+          bx += b.w + 2;
+        }
+
+        // ticket number
+        ctx.fillStyle = '#6b7a95';
+        ctx.font = font(600, 12);
+        const lblW = spacedWidth(ctx, 'TICKET Nº', 2.4);
+        spaced(ctx, 'TICKET Nº', scx - lblW / 2, H - 62, 2.4);
+        ctx.fillStyle = '#0f1e3a';
+        ctx.font = font(800, 22);
+        const idW = spacedWidth(ctx, id, 1.3);
+        spaced(ctx, id, scx - idW / 2, H - 32, 1.3);
+
+        return canvas;
+      }
+
       document.getElementById('downloadBtn').addEventListener('click', function () {
         const btn = this;
         const original = btn.innerHTML;
@@ -236,24 +485,27 @@
         btn.disabled = true;
 
         const run = function () {
-          html2canvas(ticket, { scale: 2, backgroundColor: null, useCORS: true, logging: false })
-            .then(function (canvas) {
-              const link = document.createElement('a');
-              link.download = 'ccc-2026-ticket-' + id + '.png';
-              link.href = canvas.toDataURL('image/png');
-              link.click();
-              btn.innerHTML = original;
-              btn.disabled = false;
-            })
-            .catch(function () {
-              alert('Sorry, the ticket could not be downloaded. Please screenshot it instead.');
-              btn.innerHTML = original;
-              btn.disabled = false;
-            });
+          try {
+            const canvas = drawTicket();
+            const link = document.createElement('a');
+            link.download = 'ccc-2026-ticket-' + id + '.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+          } catch (e) {
+            alert('Sorry, the ticket could not be downloaded. Please screenshot it instead.');
+          }
+          btn.innerHTML = original;
+          btn.disabled = false;
         };
 
+        // Make sure Poppins is loaded before drawing text on the canvas.
         if (document.fonts && document.fonts.ready) {
-          document.fonts.ready.then(run);
+          Promise.all([
+            document.fonts.load('800 32px Poppins'),
+            document.fonts.load('700 15px Poppins'),
+            document.fonts.load('600 13px Poppins'),
+            document.fonts.load('400 19px Poppins'),
+          ]).then(run, run);
         } else {
           run();
         }
