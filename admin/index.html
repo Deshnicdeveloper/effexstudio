@@ -345,6 +345,21 @@
     let state = { page: 1, q: '', items: [], total: 0, totalPages: 1, totalAll: 0 };
 
     const $ = (id) => document.getElementById(id);
+
+    // Parse a response as JSON, but fail gracefully if the server returned HTML
+    // (e.g. the dashboard is opened somewhere the Node backend isn't running).
+    async function parseJson(res) {
+      const text = await res.text();
+      try {
+        return JSON.parse(text);
+      } catch (_) {
+        throw new Error(
+          'The backend is not reachable from this address. Open the dashboard ' +
+          'through the running server (node server.js), not as a static file.'
+        );
+      }
+    }
+
     function token() { return localStorage.getItem(TOKEN_KEY); }
     function setToken(t) { localStorage.setItem(TOKEN_KEY, t); }
     function clearToken() { localStorage.removeItem(TOKEN_KEY); }
@@ -363,7 +378,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username: $('username').value, password: $('password').value }),
         });
-        const data = await res.json();
+        const data = await parseJson(res);
         if (!res.ok) throw new Error(data.error || 'Login failed');
         setToken(data.token);
         showApp();
@@ -404,7 +419,9 @@
         return;
       }
       if (res.status === 401) { clearToken(); showLogin(); return; }
-      const data = await res.json();
+      let data;
+      try { data = await parseJson(res); }
+      catch (err) { alert(err.message); return; }
       state.items = data.items || [];
       state.total = data.total || 0;
       state.totalPages = data.totalPages || 1;
@@ -556,7 +573,7 @@
             headers: { 'Authorization': 'Bearer ' + token() },
           });
           if (res.status === 401) { clearToken(); showLogin(); return; }
-          const data = await res.json();
+          const data = await parseJson(res);
           all = all.concat(data.items || []);
           totalPages = data.totalPages || 1;
           page++;
