@@ -199,9 +199,49 @@
       .ccc-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
       .ccc-register-grid { grid-template-columns: 1fr; gap: 2.5rem; }
     }
+
+    /* ---------- TABLET / MOBILE ---------- */
+    @media (max-width: 768px) {
+      /* Size the hero to its content instead of the viewport. This removes the
+         address-bar "vh jump" that made the background appear to parallax on
+         phones, and prevents an over-tall hero on small screens. */
+      .ccc-hero {
+        min-height: auto;
+        align-items: stretch;
+        padding-top: calc(var(--nav-height) + 2.5rem);
+        padding-bottom: 3rem;
+      }
+      .ccc-hero-bg { transform: none; } /* no scale drift while scrolling */
+      .ccc-hero-inner { padding-bottom: 0; }
+      .ccc-hero-title { font-size: clamp(2.1rem, 8vw, 3.25rem); max-width: 100%; }
+      .ccc-hero-sub { font-size: var(--text-base); }
+      .ccc-badge { font-size: var(--text-xs); padding: 0.5rem 0.85rem; }
+
+      /* Stack the hero call-to-action buttons full width so they don't crowd. */
+      .hero-ctas { flex-direction: column; align-items: stretch; gap: 0.75rem; }
+      .hero-ctas .btn { width: 100%; justify-content: center; }
+
+      /* Neutralise the scroll-reveal slide (translateY) on touch devices. It
+         reads as an unwanted parallax on mobile; a plain fade is calmer. */
+      .reveal,
+      .reveal-stagger > * { transform: none !important; }
+
+      /* Ease the stats overlap so it doesn't collide with hero text. */
+      .ccc-stats { margin-top: -2rem; }
+      .ccc-stat { padding: 1.4rem 1.2rem; }
+    }
+
     @media (max-width: 560px) {
       .ccc-grid.cols-4, .ccc-grid.cols-2, .ccc-gallery { grid-template-columns: 1fr; }
       .ccc-form-card { padding: 1.75rem; }
+      /* Single-column stats read cleaner than a cramped 2-up on phones. */
+      .ccc-stats-inner { grid-template-columns: 1fr; }
+      .ccc-stat { border-right: none; border-bottom: 1px solid var(--gray-700); }
+      .ccc-stat:last-child { border-bottom: none; }
+      /* Tighten the programme timeline for narrow screens. */
+      .ccc-step { gap: 1rem; }
+      .ccc-step-num { width: 46px; height: 46px; font-size: var(--text-base); }
+      .ccc-timeline::before { left: 22px; }
     }
   </style>
 </head>
